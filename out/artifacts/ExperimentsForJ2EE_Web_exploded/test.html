@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jsTree test</title>
+  <!-- 2 load the theme CSS file -->
+  <link rel="stylesheet" href="/resources/dist/themes/default/style.min.css" />
+</head>
+<body>
+<!-- 3 setup a container element -->
+<div id="jstree">
+  <!-- in this example the tree is populated from inline HTML -->
+  <ul class="jstree-container-ul jstree-children" role="group">
+    <li role="none" id="t-1" class="jstree-node jstree-open">
+      <i class="jstree-icon jstree-ocl" role="presentation"></i>
+      <a class="jstree-anchor" href="https://www.baidu.com" tabindex="-1" role="treeitem" aria-selected="false" aria-level="1" id="t-1-anchor">
+        <i class="jstree-icon jstree-themeicon" role="presentation"></i>
+        Root node 1
+      </a>
+      <ul role="group" class="jstree-children">
+        <li role="none" data-jstree="{ selcted : true}" class="jstree-node jstree-leaf" id="t-1-1">
+          <i class="jstree-icon jstree-ocl" role="presentation"></i>
+          <a class="jstree-anchor" href="https://www.baidu.com" tabindex="-1" role="treeitem" aria-selected="false" aria-level="2" id="t-1-1-anchor">
+            <i class="jstree-icon jstree-themeicon jstree-file" role="presentation"></i>
+            t-1-1
+<!--            <em>initially</em>-->
+<!--            <strong>selected</strong>-->
+          </a>
+        </li>
+<!--        <li>Child node 2</li>-->
+      </ul>
+    </li>
+    <li role="none" id="t-2" class="jstree-node jstree-leaf jstree-last">
+      <i class="jstree-icon jstree-ocl" role="presentation"></i>
+      <a class="jstree-anchor" href="https://www.baidu.com" tabindex="-1" role="treeitem" aria-selected="false" aria-level="1" id="t-2-anchor">
+        <i class="jstree-icon jstree-themeicon" role="presentation"></i>
+        Root node 2</a>
+    </li>
+  </ul>
+</div>
+<h1>----------------------------------------------------</h1>
+<div id="using_json">
+</div>
+<!-- 4 include the jQuery library -->
+<script src="/resources/jquery-3.6.0.js"></script>
+<!-- 5 include the minified jstree source -->
+<script src="/resources/dist/jstree.min.js"></script>
+<script>
+  $(function () {
+    // 6 create an instance when the DOM is ready
+    $('#jstree').jstree();
+    // 7 bind to events triggered on the tree
+    $('#jstree').on("changed.jstree", function (e, data) {
+      console.log(data.selected);
+    });
+    // 8 interact with the tree - either way is OK
+    $('button').on('click', function () {
+      $('#jstree').jstree(true).select_node('child_node_1');
+      $('#jstree').jstree('select_node', 'child_node_1');
+      $.jstree.reference('#jstree').select_node('child_node_1');
+    });
+
+    $('#using_json').jstree({ 'core' : {
+        'data' : [
+          {
+            'id' : 'node1',
+            'parent' : '#',
+            'text' : 'node1'
+          },
+          {
+            'id' : 'node2',
+            'parent' : '#',
+            'text' : 'node2'
+          },
+          {'id' : 'node1.1', 'parent' : 'node1', 'text' : 'node1.1'},
+          {'id' : 'node1.2', 'parent' : 'node1', 'text' : 'node1.2'},
+          {'id' : 'node2.1', 'parent' : 'node2', 'text' : 'node2.1'},
+          {'id' : 'node2.2', 'parent' : 'node2', 'text' : 'node2.2'}
+        ]
+      } });
+
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--context:component-scan的作用
+    在Spring IOC初始化过程中, 自动创建并管理com.exp.springmvc包及其子包中
+    拥有以下注解的对象.
+    @Repository
+    @Service
+    @Controller
+    @Component
+    -->
+    <context:component-scan base-package="com.exp"></context:component-scan>
+    <!--启用Spring MVC注解开发方式-->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <!--6. JSON(Jackson)序列化输出配置-->
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--把图片/JS/CSS等静态资源排除在外, 可提高执行效率-->
+    <mvc:default-servlet-handler/>
+    <!--id名固定-->
+    <bean id="ViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <!--设置响应输出, 解决中文乱码, 产生的最终结果在客户端显示使用的字符集-->
+        <property name="contentType" value="text/html;charset=utf-8"/>
+        <!--指定freemarker模板文件扩展名-->
+        <property name="suffix" value=".ftl"/>
+    </bean>
+    <!--freemarker配置-->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <!--模板路径:freemarker不像jsp被Tomcat原生支持, 为了保证模板安全-->
+        <property name="templateLoaderPath" value="/WEB-INF/ftl"/>
+        <!--其他模板引擎设置-->
+        <property name="freemarkerSettings">
+            <props>
+                <!--设置freemarker脚本与数据渲染时使用的, 即产生最终结果时使用的字符集-->
+                <prop key="defaultEncoding">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--MyBatis与Spring的整合配置-->
+    <!--配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value=" com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/j2ee?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai&amp;allowPublicKeyRetrieval=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxActive" value="10"/>
+    </bean>
+    <!--SqlSessionFactoryBean用于根据配置信息创建SqlSesionFactory, 不需要手动编码创建-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/><!-- 加载数据环境   -->
+        <!-- MyBatis的配置 可以写到这里(名称有差异), 如果在mybatis-config.xml中重复配置会error -->
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+        <!--5. MyBatis配置文件地址-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!--配置Mapper扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.exp.mapper"/>
+    </bean>
+    <!--声明式事务配置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

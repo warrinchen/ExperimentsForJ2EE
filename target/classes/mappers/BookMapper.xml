@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exp.mapper.BookMapper">
+    <select id="getAllBooks" resultType="com.exp.entity.Book">
+        SELECT id, name, author, publisher, stock, publish_time, price, register_time, register_user FROM book;
+    </select>
+    <update id="updateBook" parameterType="com.exp.entity.Book">
+        UPDATE book
+        SET name = #{name},
+            author = #{author},
+            publisher = #{publisher},
+            stock = #{stock},
+            publish_time= #{publishTime},
+            price = #{price},
+            register_time = #{registerTime},
+            register_user = #{registerUser}
+        WHERE id = #{id}
+    </update>
+    <insert id="insertBook" parameterType="com.exp.entity.Book">
+        INSERT INTO book(name, author, publisher, stock, publish_time, price, register_time, register_user)
+        <!-- 要和实体类的属性一致 -->
+        values (#{name}, #{author}, #{publisher}, #{stock}, #{publishTime}, #{price}, curdate(), #{registerUser})
+        <!--使自动生成的主键回填 insert完成后执行-->
+        <selectKey resultType="Integer" keyProperty="id" order="AFTER">
+            <!--获取当前连接最后产生的id-->
+            select last_insert_id()
+        </selectKey>
+    </insert>
+    <delete id="deleteBook" parameterType="Integer">
+        DELETE
+        FROM book
+        WHERE id = #{id};
+    </delete>
+</mapper>

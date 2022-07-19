@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exp.mapper.TreeItemMapper">
+    <select id="getTreeItemList" resultType="com.exp.entity.TreeItem">
+        SELECT id, if(belongto = '0', '#', belongto) AS parent, text FROM dept_tree ORDER BY belongto
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--开启驼峰命名转换 form_id==>formId-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <environments default="development">
+        <!--配置环境，不同的环境不同的id名字-->
+        <environment id="development">
+            <!--采用JDBC方式对数据库事务进行commit/rollback-->
+            <transactionManager type="JDBC"/>
+            <!--采用连接池方式管理数据库连接-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/j2ee"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+<!--    xml开发方式 mapper-->
+    <mappers>
+        <mapper resource="mappers/TreeItemMapper.xml"/>
+    </mappers>
+
+</configuration>

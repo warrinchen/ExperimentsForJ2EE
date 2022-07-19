@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--开启驼峰命名转换 form_id==>formId-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+<!--    <environments default="development">-->
+<!--        &lt;!&ndash;配置环境，不同的环境不同的id名字&ndash;&gt;-->
+<!--        <environment id="development">-->
+<!--            &lt;!&ndash;采用JDBC方式对数据库事务进行commit/rollback&ndash;&gt;-->
+<!--            <transactionManager type="JDBC"/>-->
+<!--            &lt;!&ndash;采用连接池方式管理数据库连接&ndash;&gt;-->
+<!--            <dataSource type="POOLED">-->
+<!--                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--                <property name="url" value="jdbc:mysql://localhost:3306/j2ee"/>-->
+<!--                <property name="username" value="root"/>-->
+<!--                <property name="password" value="root"/>-->
+<!--            </dataSource>-->
+<!--        </environment>-->
+<!--    </environments>-->
+
+</configuration>
